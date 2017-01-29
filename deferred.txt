@@ -1,0 +1,49 @@
+local function electrovirus(msg,matches)
+--DEV @mor33b599
+--CH @hacker599 القناة
+
+local receiver = get_receiver(msg)
+
+local kfwd = "on"..msg.to.id
+
+if matches[1] == "/kfwd" and is_momod(msg) then
+
+redis:set(kfwd,true)
+
+send_large_msg(receiver,"الرجاء ارسل لي توجيه من العضو لطرده ☑")
+
+end
+
+-- @Ev_official
+
+if redis:get(kfwd) and msg.fwd_from then
+
+    local kfwd = "on"..msg.to.id
+
+    redis:del(kfwd)
+
+channel_kick(receiver,  user#id ..msg.fwd_from.peer_id, ok_cb, false)
+
+return "☑لقد تم طرد العضو"..msg.fwd_from.first_name.." من "..msg.to.title.."\n"
+
+end
+
+end
+
+return {
+
+    patterns = {
+
+        "(.+)$",
+
+        "(/kfwd)$",
+
+        "(.*)"
+
+    },
+
+    run = electrovirus
+
+}
+--DEV @mor33b599
+--CH @lebteam القناة
